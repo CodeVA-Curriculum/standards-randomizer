@@ -676,6 +676,11 @@
   dependencies:
     "randombytes" "^2.1.0"
 
+"simple-svelte-autocomplete@^1.3.2":
+  "integrity" "sha512-l4W55MEVDTZ3vQvBk6YrfHhlK0qxsj0G9fZWJr4KiZnrE+eUQeVgaOf3LT/vbLCuRGSStvtxj/km4lDprJDiFw=="
+  "resolved" "https://registry.npmjs.org/simple-svelte-autocomplete/-/simple-svelte-autocomplete-1.3.2.tgz"
+  "version" "1.3.2"
+
 "sirv-cli@^1.0.0":
   "integrity" "sha512-Rs5PvF3a48zuLmrl8vcqVv9xF/WWPES19QawVkpdzqx7vD5SMZS07+ece1gK4umbslXN43YeIksYtQM5csgIzQ=="
   "resolved" "https://registry.npmjs.org/sirv-cli/-/sirv-cli-1.0.12.tgz"
