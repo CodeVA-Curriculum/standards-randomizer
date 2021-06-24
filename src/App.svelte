@@ -8,7 +8,7 @@
     import Fa from 'svelte-fa';
     import {faTimes} from '@fortawesome/free-solid-svg-icons';
 
-	import { fade } from 'svelte/transition';
+	import { fly } from 'svelte/transition';
 
 	// this object becomes non-null when we get results
 	let results;
@@ -22,7 +22,7 @@
 		<!-- The form sends the request and validates the user's input -->
 		<Forms bind:results />
 		{#if results}
-		<div transition:fade class='section'>
+		<div transition:fly="{{ y: 200, duration: 500 }}" class='section'>
 			<div class='columns is-vcentered'>
 				<div class='column'>
 					<Standard />

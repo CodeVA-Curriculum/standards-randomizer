@@ -12,17 +12,26 @@
 
     // this is exposed to the parent
     export let results;
-
+    let buttonState = "prequery";
     // Requests
     // TODO: make this request work properly
     // TODO: Validate input; make button responsive, etc.
     let go = function (g, s) {
-        axios.get(url).then(function (res) {
-            console.log(res.data);
-            results = res;
-        } ).catch(function(e) {
-            console.log(e);
-        })
+        results = null;
+        buttonState = "spinner";
+        setTimeout(function () {
+            results = {
+                cs: "CS.1",
+                nonCs: "SC.3"
+            }
+            buttonState = "prequery"
+        }, 750);
+        // axios.get(url).then(function (res) {
+        //     console.log(res.data);
+        //     results = res;
+        // } ).catch(function(e) {
+        //     console.log(e);
+        // })
     }
     // get database info to help with matching random pairs
     // get all CS grades
@@ -63,6 +72,7 @@
         </div>
     </div>
     <div class='field'>
-        <button on:click={() => go(gradeForm, subjectForm)} class='button is-primary is-rounded'>Get a Random Pair of Standards!</button>
+        <!-- <button on:click={() => go(gradeForm, subjectForm)} class='button is-primary is-rounded'>Get a Random Pair of Standards!</button> -->
+        <Button action={() => go(gradeForm, subjectForm)} state={buttonState} />
     </div>
 </div>
