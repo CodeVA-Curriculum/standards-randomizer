@@ -20,7 +20,9 @@
 		<h1 class='title'>CS + Anything</h1>
 		
 		<!-- The form sends the request and validates the user's input -->
+		<div class='section'>
 		<Forms bind:results />
+		</div>
 		{#if results}
 		<div transition:fly="{{ y: 200, duration: 500 }}" class='section'>
 			<div class='columns is-vcentered'>

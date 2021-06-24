@@ -13,6 +13,11 @@
     // this is exposed to the parent
     export let results;
     let buttonState = "prequery";
+    $: if(gradeForm && subjectForm) {
+        buttonState = "ready";
+    } else {
+        buttonState = "prequery";
+    }
     // Requests
     // TODO: make this request work properly
     // TODO: Validate input
@@ -64,14 +69,14 @@
     <div class='columns has-text-centered'>
         <div class='column'>
             <!-- Grades -->
-            <InputWithDropdown bind:value={gradeForm} title="Grade" addons='has-addons has-addons-right' contents={grades} />
+            <InputWithDropdown bind:validInput={gradeForm} title="Grade" addons='has-addons has-addons-right' contents={grades} />
         </div>
         <div class='column'>
             <!-- Subjects -->
-            <InputWithDropdown bind:value={subjectForm} title="Subject" addons='has-addons has-addons-left' contents={subjects} />
+            <InputWithDropdown bind:validInput={subjectForm} title="Subject" addons='has-addons has-addons-left' contents={subjects} />
         </div>
     </div>
-    <div class='field'>
+    <div class='field section'>
         <!-- <button on:click={() => go(gradeForm, subjectForm)} class='button is-primary is-rounded'>Get a Random Pair of Standards!</button> -->
         <Button action={() => go(gradeForm, subjectForm)} state={buttonState} />
     </div>
