@@ -2,6 +2,8 @@
     import Standard from './Standard.svelte';
     import Fa from 'svelte-fa';
     import {faTimes} from '@fortawesome/free-solid-svg-icons';
+
+    export let pair;
 </script>
 
 <div class='section'>
