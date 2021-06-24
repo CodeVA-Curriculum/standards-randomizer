@@ -15,7 +15,7 @@
     let buttonState = "prequery";
     // Requests
     // TODO: make this request work properly
-    // TODO: Validate input; make button responsive, etc.
+    // TODO: Validate input
     let go = function (g, s) {
         results = null;
         buttonState = "spinner";
@@ -24,7 +24,7 @@
                 cs: "CS.1",
                 nonCs: "SC.3"
             }
-            buttonState = "prequery"
+            buttonState = "ready"
         }, 750);
         // axios.get(url).then(function (res) {
         //     console.log(res.data);
@@ -64,11 +64,11 @@
     <div class='columns has-text-centered'>
         <div class='column'>
             <!-- Grades -->
-            <InputWithDropdown title="Grade" addons='has-addons has-addons-right' contents={grades} />
+            <InputWithDropdown bind:value={gradeForm} title="Grade" addons='has-addons has-addons-right' contents={grades} />
         </div>
         <div class='column'>
             <!-- Subjects -->
-            <InputWithDropdown title="Subject" addons='has-addons has-addons-left' contents={subjects} />
+            <InputWithDropdown bind:value={subjectForm} title="Subject" addons='has-addons has-addons-left' contents={subjects} />
         </div>
     </div>
     <div class='field'>

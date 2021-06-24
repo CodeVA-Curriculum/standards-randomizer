@@ -4,20 +4,32 @@
     }
 
     export let state = "prequery";
+    let buttonStyle = "warning";
+    let message = "Enter a grade level & subject area!";
+
+    // TODO: Optimize w/ associative array
+    $: if(state == "prequery") {
+        buttonStyle =  "warning"
+        message = "Enter a grade level & subject area!";
+    } else if(state == "ready") {
+        buttonStyle = "primary"
+        message = "Get a Random Pair of Standards!";
+    } else if(state == "spinner") {
+        buttonStyle = "primary is-loading"
+        message = "Loading..."
+    } else if(state=="error") {
+        buttonStyle = "danger"
+        message = "Error! Could not get pair"
+    }
 </script>
 
 <div class='field'>
-    {#if state == "prequery"}
-        <button on:click={action} class='button is-primary is-rounded'>Get a Random Pair of Standards!</button>
-    {:else if state=="spinner"}
-        <button on:click={action} class='button is-primary is-rounded'>Loading</button>
-    {:else if state=="error"}
-        <button on:click={action} class='button is-primary is-rounded'>Get a Random Pair of Standards!</button>
-    {/if}
+    <button on:click={action} class='button is-{buttonStyle} is-rounded'>{message}</button>
 </div>
 
 <style>
     button {
         padding: 2rem;
+        min-width: 20rem;
     }
 </style>
