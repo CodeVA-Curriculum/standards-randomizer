@@ -3,7 +3,13 @@
         console.log("Not loaded yet!");
     }
 
-    
+    $: if(state == "spinner") {
+        setTimeout(function () {
+            if(state == "spinner") {
+                state = "waiting"
+            }
+        }, 1000)
+    }
 
     export let state = "prequery";
     let buttonStyle = "warning";
@@ -11,20 +17,23 @@
 
     // TODO: Optimize w/ associative array
     $: if(state == "prequery") {
-        buttonStyle =  "warning"
+        buttonStyle =  "warning disabled"
         message = "Enter a grade level & subject area!";
     } else if(state == "ready") {
         buttonStyle = "primary"
         message = "Get a Random Pair of Standards!";
     } else if(state == "spinner") {
-        buttonStyle = "primary is-loading"
+        buttonStyle = "primary is-loading disabled"
         message = "Loading..."
     } else if(state=="error") {
-        buttonStyle = "danger"
+        buttonStyle = "danger disabled"
         message = "Error! Could not get pair"
     } else if(state == "invalid-pair") {
-        buttonStyle = "warning";
+        buttonStyle = "warning disabled";
         message = "Not a valid pair! Try a different combination";
+    } else if(state == "waiting") {
+        buttonStyle = "primary disabled"
+        message = "Trying to connect to the server..."
     }
 </script>
 

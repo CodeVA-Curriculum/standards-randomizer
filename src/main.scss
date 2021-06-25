@@ -3,7 +3,15 @@
 @import url("https://fonts.googleapis.com/css?family=Raleway&display=swap");
 
 // Set variables
+
+// Color variables
+$primary: #64B4E4;
+$danger: #F16D25;
+$warning: #84C45A;
+
+// Typography variables
 $family-sans-serif: "Raleway";
+$text: #323F47;
 
 // Import only what you need from Bulma
 @import "../node_modules/bulma/sass/utilities/_all";

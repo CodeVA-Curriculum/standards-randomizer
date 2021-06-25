@@ -3,6 +3,7 @@
 	import Forms from './components/Forms.svelte';
 	import Button from './components/Button.svelte';
 	import Results from './components/Results.svelte';
+	import StandardParser from './components/StandardParser.svelte'
 
 	import Standard from './components/Standard.svelte';
     import Fa from 'svelte-fa';
@@ -24,12 +25,14 @@
 
 		{#if results}
 		<div transition:fly="{{ y: 200, duration: 500 }}" class='section'>
-			<div class='columns is-vcentered'>
+			<div class='columns'>
 				<div class='column'>
 					<Standard content={results.cs} />
 				</div>
 				<div class='column is-2'>
+					<div class='section'>
 					   <Fa icon={faTimes} size='4x' />
+					</div>
 				</div>
 				<div class='column'>
 					<Standard content={results.other} />
@@ -37,7 +40,6 @@
 			</div>
 		</div>
 		{/if}
-		
 	</div>
 </main>
 

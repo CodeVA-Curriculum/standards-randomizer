@@ -1,6 +1,7 @@
 <!-- DOCS: https://github.com/pstanoev/simple-svelte-autocomplete -->
 
 <script>
+  import {cleanCaps} from '../scripts/utility.js'
     // the list of items  the user can select from
     export let items = [];
   
@@ -793,7 +794,7 @@
                 }}>
                 <slot
                   name="item"
-                  item={listItem.item}
+                  item={cleanCaps(listItem.item)}
                   label={listItem.highlighted ? listItem.highlighted.label : listItem.label}>
                   {#if listItem.highlighted}
                     {@html listItem.highlighted.label}
