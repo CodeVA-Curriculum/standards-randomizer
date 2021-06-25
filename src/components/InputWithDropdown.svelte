@@ -1,34 +1,53 @@
 <script>
-
-import Fa from 'svelte-fa'
+    import Fa from 'svelte-fa'
     import {faDice, faChevronDown} from '@fortawesome/free-solid-svg-icons';
     import AutoComplete from "./AutoComplete.svelte";
 
+    // Class modifier
     export let addons;
-    export let contents;
+
+    // Results of API call for grades or subjects
+    export let contents = [];
+
+    // Contents of dropdown list
+    export let list = [];
+    export let validate; // object containing pairs mapped to one another
+
+
     export let title;
     let value = "";
-    export let validInput;
+    export let validInput; // exposed to parent
 
     let formState = "";
 
-    $: if(value.length > 0 && !contents.includes(value)) {
-        formState = "is-danger"
-        validInput = null;
-    } else if(value.length > 0) {
+    function checkInput() {
+        return value.length > 0 && list.length > 0 && list.includes(value);
+    }
+
+    $: if(checkInput()) {
         formState = ""
         validInput = value;
-    } else {
+    } else if(list.length > 0 && !list.includes(value)) {
+        if(value.length == 0) {
+            formState = '';
+        } else {
+            formState = "is-danger"
+        }
         validInput = null;
+    } else {
+        validInput = value;
     }
-    let randomChoice;
+
+    // Randomize input
     function selectRandom() {
-        value = contents[Math.floor(Math.random() * contents.length)]
-        console.log("Selected", value);
+        if(list.length > 0) {
+            value = list[Math.floor(Math.random() * list.length)]
+            
+        } else {
+            console.log("Could not select random standard! No connection to server")
+            // TODO: Make this visible
+        }
     }
-
-    // TODO: Add form validation & binding
-
 
 </script>
 
@@ -36,7 +55,7 @@ import Fa from 'svelte-fa'
     <div class='control'>
         <button class='button is-static'>{title}</button>
     </div>
-    <AutoComplete className="control" inputClassName="input {formState} drop-form" dropdownClassName="has-text-left" items={contents} bind:text={value} />
+    <AutoComplete className="control" inputClassName="input {formState} drop-form" dropdownClassName="has-text-left" items={list} bind:text={value} />
     <div class='control'>
         <button on:click={selectRandom} class='button'><Fa icon={faDice} /></button>
     </div>

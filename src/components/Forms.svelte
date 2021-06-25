@@ -4,79 +4,110 @@
     import Button from './Button.svelte';
     import InputWithDropdown from './InputWithDropdown.svelte';
     import axios from 'axios';
-    let grades = ["Kindergarten"];
-    let subjects = ["Science", "Health"];
 
-    let gradeForm;
-    let subjectForm;
+    let gradeForm; // current value of the grade input
+    let subjectForm; // current value of the subject input
+
+    
 
     // this is exposed to the parent
     export let results;
     let buttonState = "prequery";
-    $: if(gradeForm && subjectForm) {
+    $: if(gradeForm && subjectForm && checkPair(gradeForm, subjectForm)) {
         buttonState = "ready";
+    } else if(!checkPair(gradeForm, subjectForm) && gradeForm && subjectForm) {
+        buttonState = "invalid-pair"
     } else {
         buttonState = "prequery";
     }
-    // Requests
-    // TODO: make this request work properly
-    // TODO: Validate input
+
     let go = function (g, s) {
-        results = null;
-        buttonState = "spinner";
-        setTimeout(function () {
-            results = {
-                cs: "CS.1",
-                nonCs: "SC.3"
-            }
-            buttonState = "ready"
-        }, 750);
-        // axios.get(url).then(function (res) {
-        //     console.log(res.data);
-        //     results = res;
-        // } ).catch(function(e) {
-        //     console.log(e);
-        // })
+        if(buttonState == "ready") {
+            results = null;
+            buttonState = "spinner";
+            axios.get('https://standards-api.herokuapp.com/api/v1.0/standards/get-pair', {
+                params: {
+                    grade: gradeForm,
+                    subject: subjectForm
+                }
+            })
+            .then(function (res) {
+                console.log(res.data);
+                results = res["data"];
+                buttonState = "ready"
+            } ).catch(function(e) {
+                console.log(e);
+                buttonState = "error";
+            })
+        } else {
+            buttonState = "error";
+            setTimeout(function () {
+                buttonState = "prequery";
+            }, 1000);
+        }
+        
     }
-    // get database info to help with matching random pairs
-    // get all CS grades
-    // Optionally the request above could also be done as
-    // axios.get('https://standards-api.herokuapp.com/api/v1.0/grades')
-    // .then(function (res) {
-    //     console.log(res["data"]);
-    //     // compile grade levels from response
-    //     grades = res["data"]["all_grades"];
 
-    //     // compile subject areas from response
-    //     for(let i=0; i<grades.length; i++) {
-    //         for(let v=0; v<res["data"][grades[i]].length; v++) {
-    //             if(!subjects.includes(res["data"][grades[i]][v])) {
-    //                 subjects.push(res["data"][grades[i]][v]);
-    //             }
-    //         }
-    //     }
-    //     console.log("Grades: ", grades);
-    //     console.log("Subjects: ", subjects);
-    // })
-    // .catch(function (error) {
-    //     console.log(error);
-    // })
+    let grades = []; // result of API call
+    let subjects = []; // result of API call
+    // Get grade info from database
+    axios.get('https://standards-api.herokuapp.com/api/v1.0/grades')
+    .then(function (res) {
+        console.log(res["data"]);
+        // compile grade levels from response
+        grades = res["data"];
+    })
+    .catch(function (error) {
+        console.log(error);
+    })
+
+    // Get subject info from database
+    axios.get('https://standards-api.herokuapp.com/api/v1.0/subjects')
+    .then(function (res) {
+        console.log(res["data"]);
+        // compile grade levels from response
+        subjects = res["data"];
+    })
+    .catch(function (error) {
+        console.log(error);
+    })
+
+    // Validate form inputs against one another
+    function checkPair(grade, subject) {
+        if(grades && grade && subject) {
+            if(grades[grade].includes(subject)) {
+                return true;
+            }
+        }
+        return false;
+    } 
     
-
 </script>
 
 <div>
     <div class='columns has-text-centered'>
         <div class='column'>
             <!-- Grades -->
-            <InputWithDropdown bind:validInput={gradeForm} title="Grade" addons='has-addons has-addons-right' contents={grades} />
+            <InputWithDropdown 
+                bind:validInput={gradeForm} 
+                title="Grade" 
+                addons='has-addons has-addons-right' 
+                list={grades["all_grades"]}
+                validate={grades}
+            />
         </div>
         <div class='column'>
             <!-- Subjects -->
-            <InputWithDropdown bind:validInput={subjectForm} title="Subject" addons='has-addons has-addons-left' contents={subjects} />
+            <InputWithDropdown 
+                bind:validInput={subjectForm} 
+                title="Subject" 
+                addons='has-addons has-addons-left' 
+                list={subjects["all_subjects"]} 
+                validate={subjects} 
+            />
         </div>
     </div>
-    <div class='field section'>
+    <div class='field'>
         <!-- <button on:click={() => go(gradeForm, subjectForm)} class='button is-primary is-rounded'>Get a Random Pair of Standards!</button> -->
         <Button action={() => go(gradeForm, subjectForm)} state={buttonState} />
     </div>

@@ -1,7 +1,9 @@
 <script>
-    export let action= function () {
+    export let action = function () {
         console.log("Not loaded yet!");
     }
+
+    
 
     export let state = "prequery";
     let buttonStyle = "warning";
@@ -20,6 +22,9 @@
     } else if(state=="error") {
         buttonStyle = "danger"
         message = "Error! Could not get pair"
+    } else if(state == "invalid-pair") {
+        buttonStyle = "warning";
+        message = "Not a valid pair! Try a different combination";
     }
 </script>
 
